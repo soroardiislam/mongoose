@@ -6,9 +6,15 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
-
-exports.getpost = (req, res, next) => {
+exports.postLogin = (req, res, next) => {
   console.log(req.body);
-  res.cookie('isLoggedIn', true);
-  res.redirect('/')
-};
+  req.session.isLoggedIn = true;
+  
+  res.redirect("/");
+}
+
+exports.postLogout = (req, res, next) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  })
+}

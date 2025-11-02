@@ -1,33 +1,32 @@
-
 const mongoose = require('mongoose');
-const favourite = require('./favourite')
+const favourite = require('./favourite');
 
-const homeSchama = mongoose.Schema({
-  home:{
+const homeSchema = mongoose.Schema({
+  houseName: {
     type: String,
-    require: true
+    required: true
   },
-    price:{
+  price: {
     type: Number,
-    require: true
+    required: true
   },
-    location:{
+  location: {
     type: String,
-    require: true
+    required: true
   },
-    rating:{
+  rating: {
     type: Number,
-    require: true
+    required: true
   },
-    photoUrl: String,
-    description: String,
-})
+  photoUrl: String,
+  description: String,
+});
 
-homeSchama.pre('findOneAndDelete', async function(next) {
-  const homeId = this.getQuery()['_id'];
-  await favourite.deleteMany({homeId:homeId});
+homeSchema.pre('findOneAndDelete', async function(next) {
+  console.log('Came to pre hook while deleting a home');
+  const homeId = this.getQuery()._id;
+  await favourite.deleteMany({houseId: homeId});
   next();
 });
 
-
-module.exports= mongoose.model('Home', homeSchama)
+module.exports = mongoose.model('Home', homeSchema);
